@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+if [ ! -n "$FR24KEY" -o ! -n "$FEEDHOST" ]; then
+    echo "Please set FR24KEY (hex) and FEEDHOST (host:port)"
+    exit 1
+fi
+
+cat >/etc/fr24feed.ini <<EOM
+receiver="avr-tcp"
+fr24key="${FR24KEY}"
+host="${FEEDHOST}"
+bs="no"
+raw="no"
+logmode="2"
+logpath="/var/log/fr24feed"
+mlat="yes"
+mlat-without-gps="yes"
+EOM
+
+exec /usr/local/bin/fr24feed
